@@ -140,9 +140,9 @@ map <- ggplot(data=dist.table, mapping=aes(map_id = district, fill = bicycle.pro
 ###########################################################################################
 # Turn our ggplot map into an svg object
 # We'll use a png output device to manually control width and height parameters
-png(filename="output.png", width=1024, height=480, unit="px")
+png(filename="temp.png", width=1024, height=480, unit="px")
 map
-map.svg <- grid.export("plot1.svg",addClasses=TRUE, strict=TRUE, progress=TRUE,
+map.svg <- grid.export("temp.svg",addClasses=TRUE, strict=TRUE, progress=TRUE,
                        exportMappings="inline", exportCoords="inline", res=72)
 dev.off()
 
@@ -177,7 +177,7 @@ xml_set_attr(svg.text.g, "transform", paste0("translate(0, ", map.svg$coords$ROO
 output_data <- read_xml(paste("<script>dataset=",rjson::toJSON(map_data),"</script>"))
 color_key <- read_xml(paste("<script>na_color=",rjson::toJSON(NA_color),"; colorkey=", rjson::toJSON(colors$fill), "</script>"))
 d3 <- read_xml('<script xlink:href="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>')
-script <- read_xml("<script xlink:href='./svg.js'></script>")
+script <- read_xml("<script xlink:href='./map-svg.js'></script>")
 xml_add_child(svg.text,output_data)
 xml_add_child(svg.text,color_key)
 xml_add_child(svg.text,d3)
